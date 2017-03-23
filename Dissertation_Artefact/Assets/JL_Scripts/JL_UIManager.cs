@@ -229,10 +229,10 @@ public class JL_UIManager : MonoBehaviour
                     UI_TextC.text = "Fire at the mage first";
                     break;
                 case 13:
-                    UI_ScenarioText.text = "Wyrm";
-                    UI_TextA.text = "Hit the tongue";
-                    UI_TextB.text = "Hit the nose";
-                    UI_TextC.text = "Go for the eyes";
+                    UI_ScenarioText.text = "In the final room is a great Wyrm, coiling around itself. As soon as you enter the room it detects you, and spins to face you. No matter how you orient yourselves it keeps its body behind its head, protecting is underside. You must hit part of its head.";
+                    UI_TextA.text = "Go for the tounge that is flicking in and out of the mouth";
+                    UI_TextB.text = "Slash at the nose, easily within reach";
+                    UI_TextC.text = "Go for the eyes, in the hopes of blinding it";
                     break;
             }
         }
@@ -326,7 +326,7 @@ public class JL_UIManager : MonoBehaviour
                     break;
             }
         }
-        
+
     }
 
 
@@ -337,48 +337,48 @@ public class JL_UIManager : MonoBehaviour
         bool tSetA = GameObject.Find("LevelManager").GetComponent<JL_LevelManager>().BL_SetA;
         if (tSetA)
         {
-            DI_Responses.Add(new Vector3(1, 0, 0), "The goblins have highly sensitive hearing, so although you are hidden they hear the armour of the knight, and pounce. the knight takes a blow to his side, before recovering and cleaving the remaining goblins in half.");
+            DI_Responses.Add(new Vector3(1, 0, 0), "The goblins have highly sensitive hearing, so although you are hidden they hear the armour of the knight, and pounce. the knight takes a blow to his side, before recovering and cleaving the remaining goblins in half.\n\nKnight - 3 HP");
             DI_Responses.Add(new Vector3(1, 0, 1), "The goblins fall almost before they are aware of your presence, and no injuries are sustained.");
-            DI_Responses.Add(new Vector3(1, 0, 2), "");
-            DI_Responses.Add(new Vector3(1, 1, 0), "");
-            DI_Responses.Add(new Vector3(1, 1, 1), "");
-            DI_Responses.Add(new Vector3(1, 1, 2), "");
-            DI_Responses.Add(new Vector3(2, 2, 0), "");
-            DI_Responses.Add(new Vector3(2, 2, 1), "");
-            DI_Responses.Add(new Vector3(2, 2, 2), "");
-            DI_Responses.Add(new Vector3(2, 3, 0), "");
-            DI_Responses.Add(new Vector3(2, 3, 1), "");
-            DI_Responses.Add(new Vector3(2, 3, 2), "");
-            DI_Responses.Add(new Vector3(2, 4, 0), "");
-            DI_Responses.Add(new Vector3(2, 4, 1), "");
-            DI_Responses.Add(new Vector3(2, 4, 2), "");
-            DI_Responses.Add(new Vector3(2, 5, 0), "");
-            DI_Responses.Add(new Vector3(2, 5, 1), "");
-            DI_Responses.Add(new Vector3(2, 5, 2), "");
-            DI_Responses.Add(new Vector3(2, 6, 0), "");
-            DI_Responses.Add(new Vector3(2, 6, 1), "");
-            DI_Responses.Add(new Vector3(1, 6, 2), "");
-            DI_Responses.Add(new Vector3(1, 7, 0), "");
-            DI_Responses.Add(new Vector3(1, 7, 1), "");
-            DI_Responses.Add(new Vector3(1, 7, 2), "");
-            DI_Responses.Add(new Vector3(1, 8, 0), "");
-            DI_Responses.Add(new Vector3(1, 8, 1), "");
-            DI_Responses.Add(new Vector3(1, 8, 2), "");
-            DI_Responses.Add(new Vector3(1, 9, 0), "");
-            DI_Responses.Add(new Vector3(1, 9, 1), "");
-            DI_Responses.Add(new Vector3(1, 9, 2), "");
-           DI_Responses.Add(new Vector3(1, 10, 0), "");
-           DI_Responses.Add(new Vector3(1, 10, 1), "");
-           DI_Responses.Add(new Vector3(1, 10, 2), "");
-           DI_Responses.Add(new Vector3(1, 11, 0), "");
-           DI_Responses.Add(new Vector3(1, 11, 1), "");
-           DI_Responses.Add(new Vector3(1, 11, 2), "");
-           DI_Responses.Add(new Vector3(1, 12, 0), "");
-           DI_Responses.Add(new Vector3(1, 12, 1), "");
-           DI_Responses.Add(new Vector3(1, 12, 2), "");
-           DI_Responses.Add(new Vector3(1, 13, 0), "");
-           DI_Responses.Add(new Vector3(1, 13, 1), "");
-           DI_Responses.Add(new Vector3(1, 13, 2), "");
+            DI_Responses.Add(new Vector3(1, 0, 2), "The goblins panic briefly, giving you time to prepare your attack, but they still get a single hit off onto the wizard.\n\nWizard -1 HP");
+            DI_Responses.Add(new Vector3(1, 1, 0), "Fire is a spider's bane, and they fall quickly to the flames.");
+            DI_Responses.Add(new Vector3(1, 1, 1), "The Rogue struggles to find his mark on the skittering targets, and they quickly reach the party, with the wizard taking a few nasty bites.\n\n Wizard -4 HP");
+            DI_Responses.Add(new Vector3(1, 1, 2), "The knight strides forward with his sword in hand, slashing away at spiders, dealing with them easily, however not before everyone in the part takes a few scrapes.\n\nAll Party Members -1 HP");
+            DI_Responses.Add(new Vector3(2, 2, 0), "The Rogue attempts to jimmy the lock, but in doing so sets off the trap. It is however aimed at head height, meaning that the ensuing ball of fire only singes the Rogue's shoulder\n\nRogue - 2 HP");
+            DI_Responses.Add(new Vector3(2, 2, 1), "The Knight's boot makes quick work of the door, and after a few blows it crashes inwards, and the fireball trap that guarded the door simply goes off harmlessly on the floor.");
+            DI_Responses.Add(new Vector3(2, 2, 2), "The handle turns and the trap guarding the door goes off, blasting fire into the Rogue's face.\n\nRogue -3 HP");
+            DI_Responses.Add(new Vector3(2, 3, 0), "The Guard turns at the last second and lashes out at the Rogue, turning the sneak attack around, before he gets crushed by the Knight's blade.\n\nRogue -3 HP");
+            DI_Responses.Add(new Vector3(2, 3, 1), "The Guard turns and attempts to block the charge but the sheer force of a charging Knight sends his bones across the floor, but his sword managed to dig into the Knight's shoulder.\n\nKnight -2 HP");
+            DI_Responses.Add(new Vector3(2, 3, 2), "At the very last second the Knight lashes out with his shield, staggering the skeleton and allowing the Rogue to destroy it.");
+            DI_Responses.Add(new Vector3(2, 4, 0), "You start to feel ill as you slowly search the room, which reveals vents in the walls and floor - Poison Gas! You rush out of the room to get away.\n\nAll Party Members -1 HP");
+            DI_Responses.Add(new Vector3(2, 4, 1), "It is not long before the entire party is awake in a bout of sickness, you realise the room is filled with a light poison gas, and that should you have fallen deeply asleep you might have died.\n\nAll Party Members -3 HP");
+            DI_Responses.Add(new Vector3(2, 4, 2), "You walk through the room, wondering if there was ever anything in that room.");
+            DI_Responses.Add(new Vector3(2, 5, 0), "The party takes some damage slashing at the rats legs immobilises it, and it cannot reach you with its arms or teeth to do any further damage");
+            DI_Responses.Add(new Vector3(2, 5, 1), "Trying to damage the rat from near its tail proves challenging, and it sweeps its tail to knock the knight off his feet.\n\n Knight -4 HP");
+            DI_Responses.Add(new Vector3(2, 5, 2), "Getting close to the crushing jaws of a giant rat was a grave mistake - as it uses them to take a large chunk out of the knight, armour and all.\n\n Knight - 6 HP");
+            DI_Responses.Add(new Vector3(2, 6, 0), "The Kobold shrieks as the arrow flies towards him, alerting the other kobolds. They watch him fall, before preparing their weapons. The fight is not difficult but a few injuries are sustained.\n\nWizard -3 HP");
+            DI_Responses.Add(new Vector3(2, 6, 1), "The bolt instantly fries the kobold, and the other scouts turn around to investigate the noise. Whilst they are doing so you charge into battle.\n\nAll Party Members -2 HP");
+            DI_Responses.Add(new Vector3(2, 6, 2), "You charge into battle over the top of the scout, trampling him and moving swiftly into combat. The Kobold Scouts fall quickly.\n\nAll Party Members -1 HP");
+            DI_Responses.Add(new Vector3(2, 7, 0), "The bears wake as you run past, and catch you before you make it out of the cave.\n\nAll Party Members -4 HP");
+            DI_Responses.Add(new Vector3(2, 7, 1), "Fortunately, the bears stay asleep as you creep past.");
+            DI_Responses.Add(new Vector3(2, 7, 2), "The surprise of being attacked as they sleep puts the bears at a great disadvantage, but they still put up a great fight.");
+            DI_Responses.Add(new Vector3(2, 8, 0), "The Rogue slices his throat, and he instantly dies, his evil minions along with him.");
+            DI_Responses.Add(new Vector3(2, 8, 1), "The Knight makes it to the Necromancer but the skeleton nearby lunges, digging his blade deep into the Knight's armour. However as soon as the Necromancer dies the skeleton falls as well.\n\nKnight -4 HP");
+            DI_Responses.Add(new Vector3(2, 8, 2), "The silenced necromancer can do nothing more than wield his dagger, and dispatching him and his guard are easy enough.\n\nRogue -2 HP");
+            DI_Responses.Add(new Vector3(2, 9, 0), "The cave troll falls to the floor in a ball of flame, but distracting him wounded the Knight.\n\nKnight -3 HP");
+            DI_Responses.Add(new Vector3(2, 9, 1), "The acid pool is bigger than expected, meaning everyone in the room suffers some minor burns, but due to its weakness to the substance the troll melts into the pool swiftly.\n\nAll Party Members -1 HP");
+            DI_Responses.Add(new Vector3(2, 9, 2), "The freeze spell has little effect on the troll, and it takes the party a long time to bring him down. He gets a solid hit on the Rogue, knocking him against the wall.\n\nRogue -5 HP");
+            DI_Responses.Add(new Vector3(1, 10, 0), "A bright lines shines, casting away all shadows and forcing the snakes to the edges of the room.");
+            DI_Responses.Add(new Vector3(1, 10, 1), "The fireball sears a large number of snakes, however there are many so it takes a few attempts to remove them all.\n\nRogue -3 HP");
+            DI_Responses.Add(new Vector3(1, 10, 2), "The snakes are everywhere, and running is difficult. Although you make it to the other side of the room, everyone has sustained injuries.\n\nAll Party Members -2 HP");
+            DI_Responses.Add(new Vector3(1, 11, 0), "'Oh no, I'm afraid that won't be possible.' Says the leader, before the assassins spring into attack. You manage to fight them off, but the Wizard took a nasty cut.\n\nWizard -4 HP");
+            DI_Responses.Add(new Vector3(1, 11, 1), "You try to surprise them, but as assassins their reactions are honed, and they are ready to fight almost immediately.\n\nAll Party Members -2 HP");
+            DI_Responses.Add(new Vector3(1, 11, 2), "They fall for the ruse, and as they come over to detain you the Knight and Rogue take two of them down quickly. The final puts up a fight but is no match for the party.\n\nKnight -2 HP");
+            DI_Responses.Add(new Vector3(1, 12, 0), "Attacking the leader proved almost futile, as he is the hardiest there, and his wounds immediately begin to heal due to the healer's magic. You struggle to fight the entire group, but eventually emerge victorious.\n\nAll Party Members -3 HP");
+            DI_Responses.Add(new Vector3(1, 12, 1), "Removing the healer means that the rest are significantly more scared of entering combat, and thus dispatching the rest is easy, however the Yuan-Ti mage does blast the Knight.\n\nKnight -3 HP");
+            DI_Responses.Add(new Vector3(1, 12, 2), "The mage falls immediately, but the leader still stands to avenge him, with a healer in tow. This makes taking the brute down, but there is no ranged fire support for him so it is not too bad.\n\nRogue -5 HP");
+            DI_Responses.Add(new Vector3(1, 13, 0), "The tongue proves very difficult to hit, and in fact knocks the wizard down, allowing the fangs to plunge into his chest. This allows the rogue to stab through the roof of the mouth into the skull, ending the Wyrm.\n\nWizard -6 HP");
+            DI_Responses.Add(new Vector3(1, 13, 1), "The nose is an easy target and relatively safe, but it seems that the Wyrm is not too bothered by being hit there. Causing enough damage to slay it requires time, and the Knight sustains injuries whilst in combat.\n\nKnight -3 HP");
+            DI_Responses.Add(new Vector3(1, 13, 2), "The snake's eyes are it's weakness, and as soon as it snaps the Rogue and Knight split either side, stabbing both eyes. It recoils, but without vision it accidentally reveals its underbelly, allowing the party to swiftly finish it.\n\nAll Party Members -1 HP");
         }
         else
         {
