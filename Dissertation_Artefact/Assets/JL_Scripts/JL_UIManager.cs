@@ -11,6 +11,7 @@ public class JL_UIManager : MonoBehaviour
     public GameObject UI_ScenarioCanvas;
     public GameObject UI_InterimCanvas;
     public GameObject UI_LevelCompleteCanvas;
+    public GameObject UI_FinishCanvas;
 
     public GameObject UI_Situation;
     public GameObject UI_AdvanceButton;
@@ -18,6 +19,10 @@ public class JL_UIManager : MonoBehaviour
     public GameObject UI_UsedAmuletText;
     public Text UI_CurrentHolder;
     public Text UI_PotionsLeft;
+    public Text UI_DifficultyText;
+
+    public Text UI_LevelCompleteText;
+    public GameObject UI_ProceedButton;
 
     public Text UI_ScenarioText;
     public Text UI_TextA;
@@ -30,8 +35,10 @@ public class JL_UIManager : MonoBehaviour
 
     public int IN_Scenario = 0;
     public int IN_Level = 0;
+    public int IN_levelsCompleted = 0;
 
     public bool BL_LevelComplete = false;
+    public bool BL_LifeLeft = true;
 
     public Dictionary<Vector3, string> DI_Responses;
 
@@ -100,17 +107,28 @@ public class JL_UIManager : MonoBehaviour
     {
         if (BL_LevelComplete)
         {
-            if (IN_Level == 4)
+            IN_levelsCompleted++;
+            if (IN_levelsCompleted == 3)
             {
-                Debug.Log("You Finished The Game!");
+                //UI_ScenarioCanvas.SetActive(false);
+                //UI_FinishCanvas.SetActive(true);
+                UI_ScenarioCanvas.SetActive(false);
+                UI_LevelCompleteCanvas.SetActive(true);
+                UI_ProceedButton.SetActive(false);
+                UI_LevelCompleteText.text = "Thank you for participating in this test! Please inform the researcher if you wish to be notified of the results of this study.";
             }
-            SC_LevelManager.NextLevel();
-            IN_Level++;
-            IN_Scenario++;
-            BL_LevelComplete = false;
-            ChangeText();
-            UI_ScenarioCanvas.SetActive(false);
-            UI_LevelCompleteCanvas.SetActive(true);
+            else
+            {
+                SC_LevelManager.NextLevel();
+                IN_Level++;
+                IN_Scenario++;
+                BL_LevelComplete = false;
+                ChangeText();
+                UI_ScenarioCanvas.SetActive(false);
+                UI_LevelCompleteCanvas.SetActive(true);
+                UI_LevelCompleteText.text = "You have completed the level!\n\nYour heroes will rest and heal, and the amulet will be useable again.\n\nPress proceed to delve further into the dungeon.";
+            }
+
         }
         else
         {
@@ -121,26 +139,51 @@ public class JL_UIManager : MonoBehaviour
         }
     }
 
+    public void Death()
+    {
+        if (BL_LifeLeft)
+        {
+            BL_LevelComplete = false;
+            SC_LevelManager.NextLevel();
+            IN_Level++;
+            IN_Scenario = (IN_Level == 3) ? 6 : 10;
+            ChangeText();
+            UI_ScenarioCanvas.SetActive(false);
+            UI_LevelCompleteCanvas.SetActive(true);
+            UI_LevelCompleteText.text = "One of your heroes has fallen, but you have one more chance.\n\nYour heroes will rest and heal, and the amulet will be useable again.\n\nPress proceed to delve further into the dungeon.";
+        }
+        else
+        {
+            UI_ScenarioCanvas.SetActive(false);
+            UI_LevelCompleteCanvas.SetActive(true);
+            UI_ProceedButton.SetActive(false);
+            UI_LevelCompleteText.text = "Your heroes have fallen too many times to continue.\n\nThank you for participating in this test! Please inform the researcher if you wish to be notified of the results of this study.";
+        }
+    }
+
     public void ButtonA()
     {
         Vector3 Result = new Vector3(IN_Level, IN_Scenario, 0);
-        ChoiceMade(Result);
         SC_LevelManager.ChoiceMade(Result);
-        print("I chose: " + Result.ToString());
+        if (SC_LevelManager.IN_KnightHP <= 0 || SC_LevelManager.IN_RogueHP <= 0 || SC_LevelManager.IN_WizardHP <= 0) ;
+        else ChoiceMade(Result);
+        //print("I chose: " + Result.ToString());
     }
     public void ButtonB()
     {
         Vector3 Result = new Vector3(IN_Level, IN_Scenario, 1);
-        ChoiceMade(Result);
         SC_LevelManager.ChoiceMade(Result);
-        print("I chose: " + Result.ToString());
+        if (SC_LevelManager.IN_KnightHP <= 0 || SC_LevelManager.IN_RogueHP <= 0 || SC_LevelManager.IN_WizardHP <= 0) ;
+        else ChoiceMade(Result);
+        //print("I chose: " + Result.ToString());
     }
     public void ButtonC()
     {
         Vector3 Result = new Vector3(IN_Level, IN_Scenario, 2);
-        ChoiceMade(Result);
         SC_LevelManager.ChoiceMade(Result);
-        print("I chose: " + Result.ToString());
+        if (SC_LevelManager.IN_KnightHP <= 0 || SC_LevelManager.IN_RogueHP <= 0 || SC_LevelManager.IN_WizardHP <= 0) ;
+        else ChoiceMade(Result);
+        //print("I chose: " + Result.ToString());
     }
 
     public void ChoiceMade(Vector3 vV3_Choice)
@@ -185,6 +228,7 @@ public class JL_UIManager : MonoBehaviour
             SC_LevelManager.IN_PotionsLeft--;
             UI_PotionsLeft.text = SC_LevelManager.IN_PotionsLeft.ToString();
             SC_LevelManager.HPCheck();
+            SC_LevelManager.IN_TacticScore++;
         }
     }
     public void RoguePotion()
@@ -195,6 +239,7 @@ public class JL_UIManager : MonoBehaviour
             SC_LevelManager.IN_PotionsLeft--;
             UI_PotionsLeft.text = SC_LevelManager.IN_PotionsLeft.ToString();
             SC_LevelManager.HPCheck();
+            SC_LevelManager.IN_TacticScore++;
         }
     }
     public void WizardPotion()
@@ -205,6 +250,7 @@ public class JL_UIManager : MonoBehaviour
             SC_LevelManager.IN_PotionsLeft--;
             UI_PotionsLeft.text = SC_LevelManager.IN_PotionsLeft.ToString();
             SC_LevelManager.HPCheck();
+            SC_LevelManager.IN_TacticScore++;
         }
     }
 
@@ -238,7 +284,7 @@ public class JL_UIManager : MonoBehaviour
                     UI_ScenarioText.text = "From the darkness of the dungeon you can see three goblins sat aroud a campfire, chattering loudly. Each of them has a crude weapon lying nearby.\n\nThe party is currently concealed, and the small campfire's light does not reach the edge of the room, leaving a path around the edge steeped in darkness.\n\nWhat do you do?";
                     UI_TextA.text = "Sneak past the goblins";
                     UI_TextB.text = "Attack!";
-                    UI_TextC.text = "";
+                    UI_TextC.text = "Use a battlecry to try and scare the goblins";
                     break;
                 case 1:
                     UI_ScenarioText.text = "As you stand in the corridor, spiders suddenly descend from the ceiling in the next room - about half the size of a man, numbering about a dozen. Each of them has bright green poison dripping from its fangs.\n\nWho attacks first?";
@@ -444,15 +490,15 @@ public class JL_UIManager : MonoBehaviour
             DI_Responses.Add(new Vector3(2, 4, 0), "You start to feel ill as you slowly search the room, which reveals vents in the walls and floor - Poison Gas! You rush out of the room to get away.\n\nAll Party Members -1 HP");
             DI_Responses.Add(new Vector3(2, 4, 1), "It is not long before the entire party is awake in a bout of sickness, you realise the room is filled with a light poison gas, and that should you have fallen deeply asleep you might have died.\n\nAll Party Members -3 HP");
             DI_Responses.Add(new Vector3(2, 4, 2), "You walk through the room, wondering if there was ever anything in that room.");
-            DI_Responses.Add(new Vector3(2, 5, 0), "The party takes some damage slashing at the rats legs immobilises it, and it cannot reach you with its arms or teeth to do any further damage");
+            DI_Responses.Add(new Vector3(2, 5, 0), "The party takes some damage slashing at the rats legs immobilises it, and it cannot reach you with its arms or teeth to do any further damage\n\nAll Party Members -1 HP");
             DI_Responses.Add(new Vector3(2, 5, 1), "Trying to damage the rat from near its tail proves challenging, and it sweeps its tail to knock the knight off his feet.\n\n Knight -4 HP");
             DI_Responses.Add(new Vector3(2, 5, 2), "Getting close to the crushing jaws of a giant rat was a grave mistake - as it uses them to take a large chunk out of the knight, armour and all.\n\n Knight - 6 HP");
             DI_Responses.Add(new Vector3(3, 6, 0), "The Kobold shrieks as the arrow flies towards him, alerting the other kobolds. They watch him fall, before preparing their weapons. The fight is not difficult but a few injuries are sustained.\n\nWizard -3 HP");
-            DI_Responses.Add(new Vector3(3, 6, 1), "The bolt instantly fries the kobold, and the other scouts turn around to investigate the noise. Whilst they are doing so you charge into battle.\n\nAll Party Members -2 HP");
-            DI_Responses.Add(new Vector3(3, 6, 2), "You charge into battle over the top of the scout, trampling him and moving swiftly into combat. The Kobold Scouts fall quickly.\n\nAll Party Members -1 HP");
+            DI_Responses.Add(new Vector3(3, 6, 1), "The bolt instantly fries the kobold, and the other scouts turn around to investigate the noise. Whilst they are doing so you charge into battle.\n\nAll Party Members -1 HP");
+            DI_Responses.Add(new Vector3(3, 6, 2), "You charge into battle over the top of the scout, trampling him and moving swiftly into combat. The Kobold Scouts fall quickly.");
             DI_Responses.Add(new Vector3(3, 7, 0), "The bears wake as you run past, and catch you before you make it out of the cave.\n\nAll Party Members -4 HP");
             DI_Responses.Add(new Vector3(3, 7, 1), "Fortunately, the bears stay asleep as you creep past.");
-            DI_Responses.Add(new Vector3(3, 7, 2), "The surprise of being attacked as they sleep puts the bears at a great disadvantage, but they still put up a great fight.");
+            DI_Responses.Add(new Vector3(3, 7, 2), "The surprise of being attacked as they sleep puts the bears at a great disadvantage, but they still put up a great fight.\n\nAll Party Members -1 HP");
             DI_Responses.Add(new Vector3(3, 8, 0), "The Rogue slices his throat, and he instantly dies, his evil minions along with him.");
             DI_Responses.Add(new Vector3(3, 8, 1), "The Knight makes it to the Necromancer but the skeleton nearby lunges, digging his blade deep into the Knight's armour. However as soon as the Necromancer dies the skeleton falls as well.\n\nKnight -4 HP");
             DI_Responses.Add(new Vector3(3, 8, 2), "The silenced necromancer can do nothing more than wield his dagger, and dispatching him and his guard are easy enough.\n\nRogue -2 HP");
@@ -500,7 +546,7 @@ public class JL_UIManager : MonoBehaviour
             DI_Responses.Add(new Vector3(3, 7, 2), "The creature's unnatural strength reveals that it is indeed a vampire. The following battle is tough, even with it outnumbered.\n\nKnight -3 HP");
             DI_Responses.Add(new Vector3(3, 8, 0), "Within a second of the hand being inside, the Mimic slams itself shut, trapping the Rogue's hand inside. The Knight smashes it swiftly, but the treasure inside was just an illusion.\n\nRogue -4 HP");
             DI_Responses.Add(new Vector3(3, 8, 1), "Leaving it, you turn around, only for the Mimic to leap forward, scraping the Rogue as it brushes past his shoulder. It is not a tough creature to kill, but still did some damage.\n\nRogue -2 HP");
-            DI_Responses.Add(new Vector3(3, 8, 2), "Slamming the lid shut stuns the Mimic momentarily, causing the party to realise what it truly was and deal with it quickly.");
+            DI_Responses.Add(new Vector3(3, 8, 2), "Slamming the lid shut stuns the Mimic momentarily, causing the party to realise what it truly is and deal with it quickly.");
             DI_Responses.Add(new Vector3(3, 9, 0), "The Demon's wings are primarily for show in this underground dungeon, so he is not hindered greatly, which leads him to deal a great deal of damage before he is struck down.\n\nAll Party Members -3 HP");
             DI_Responses.Add(new Vector3(3, 9, 1), "The head is a good place to focus, as the demon is confident his head is out of reach and ignores the rogue in favour of hitting the wizard. The Rogue's agility swiftly proves him wrong.\n\nWizard -2 HP");
             DI_Responses.Add(new Vector3(3, 9, 2), "The hands are where his claws are, and removing the arms deals with this problem. However being on the business end of Demon Claws causes the Knight to take a big hit.\n\nKnight -3 HP");
@@ -509,7 +555,7 @@ public class JL_UIManager : MonoBehaviour
             DI_Responses.Add(new Vector3(4, 10, 2), "The cone of flame quickly removes any chance of the undead returning any more.");
             DI_Responses.Add(new Vector3(4, 11, 0), "By moving from outer circle, to inner circle you remove all cultists without the other breaking trance, until the dark priest awoke to a room devoid of his followers and you looming over him.");
             DI_Responses.Add(new Vector3(4, 11, 1), "Breaking the inner circle causes the outer circle to also wake, meaning you have to deal with a few angry cultists.\n\nAll Party Members -1 HP");
-            DI_Responses.Add(new Vector3(4, 11, 2), "Attacking the leader of the ritual breaks it, leaving you to fight an entire room of angered cultists.\n\nAll Party Members -2HP");
+            DI_Responses.Add(new Vector3(4, 11, 2), "Attacking the leader of the ritual breaks it, leaving you to fight an entire room of angered cultists.\n\nAll Party Members -2 HP");
             DI_Responses.Add(new Vector3(4, 12, 0), "Electricity does nothing to a slime, and whilst you try to take advantage of a nonexistant stun period, it severely injurs the Rogue\n\nRogue -4 HP");
             DI_Responses.Add(new Vector3(4, 12, 1), "Hitting it with a blade does little to the slime, and slightly damages the blade but this it to switch focus to the Knight, allowing the wizard to blast it apart with magic.\n\nKnight -2 HP");
             DI_Responses.Add(new Vector3(4, 12, 2), "A frozen slime can do nothing, and shattering it is simple.");

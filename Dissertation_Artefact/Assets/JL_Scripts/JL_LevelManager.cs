@@ -33,7 +33,10 @@ public class JL_LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (IN_KnightHP <= 0 || IN_RogueHP <= 0 || IN_WizardHP <= 0)
+        {
+            SC_UIManager.Death();
+        }
     }
 
     void AdaptiveDifficulty(int vtacscore)
@@ -55,19 +58,35 @@ public class JL_LevelManager : MonoBehaviour
         }
         else
         {
-            if (IN_TacticScore <= 3)
+            if (IN_TacticScore <= 5)
             {
                 if (IN_Difficulty > -1) IN_Difficulty--;
             }
-            else if (IN_TacticScore > 3 && IN_TacticScore < 6)
+            else if (IN_TacticScore > 5 && IN_TacticScore < 9)
             {
                 //Do nothing to the difficulty
             }
-            else if (IN_TacticScore >= 6)
+            else if (IN_TacticScore >= 9)
             {
                 if (IN_Difficulty < 1) IN_Difficulty++;
             }
         }
+
+        switch (IN_Difficulty)
+        {
+            case -1:
+                SC_UIManager.UI_DifficultyText.text = "Reduced by 1 from difficulty";
+                break;
+            case 0:
+                SC_UIManager.UI_DifficultyText.text = "No change from difficulty";
+                break;
+            case 1:
+                SC_UIManager.UI_DifficultyText.text = "Increased by 1 from difficulty";
+                break;
+        }
+
+
+        IN_TacticScore = 0;
     }
 
     public void NextLevel()
@@ -87,9 +106,10 @@ public class JL_LevelManager : MonoBehaviour
 
     public void ChoiceMade(Vector3 vV3_Choice)
     {
-        
         Vector3 V3_Result = DI_Results[vV3_Choice];
-        print("The Result is: " + V3_Result.ToString());
+        string printing = "Level " + SC_UIManager.IN_Level + " Scenario " + SC_UIManager.IN_Scenario + " Choice " + vV3_Choice.z;
+        print(printing);
+        //"I chose " + vV3_Choice.ToString() + " and the result is: " + V3_Result.ToString()
 
         bool tBL_AmuletUsed = false;
         int tIN_Char = (int)V3_Result.x;
@@ -103,33 +123,36 @@ public class JL_LevelManager : MonoBehaviour
             switch (tIN_Char)
             {
                 case 0:
-                    if (IN_AmuletHolder == 0) tBL_AmuletUsed = true;
+                    if (IN_AmuletHolder == 0) { tBL_AmuletUsed = true; IN_TacticScore++; }
                     else IN_KnightHP -= tIN_Damage;
                     break;
                 case 1:
-                    if (IN_AmuletHolder == 1) tBL_AmuletUsed = true;
+                    if (IN_AmuletHolder == 1) { tBL_AmuletUsed = true; IN_TacticScore++; }
                     else IN_RogueHP -= tIN_Damage;
                     break;
                 case 2:
-                    if (IN_AmuletHolder == 2) tBL_AmuletUsed = true;
+                    if (IN_AmuletHolder == 2) { tBL_AmuletUsed = true; IN_TacticScore++; }
                     else IN_WizardHP -= tIN_Damage;
                     break;
                 case 3:
                     if (IN_AmuletHolder == 0)
                     {
                         tBL_AmuletUsed = true;
+                        IN_TacticScore++;
                         IN_RogueHP -= tIN_Damage;
                         IN_WizardHP -= tIN_Damage;
                     }
                     else if (IN_AmuletHolder == 1)
                     {
                         tBL_AmuletUsed = true;
+                        IN_TacticScore++;
                         IN_KnightHP -= tIN_Damage;
                         IN_WizardHP -= tIN_Damage;
                     }
                     else if (IN_AmuletHolder == 2)
                     {
                         tBL_AmuletUsed = true;
+                        IN_TacticScore++;
                         IN_KnightHP -= tIN_Damage;
                         IN_RogueHP -= tIN_Damage;
                     }
@@ -141,7 +164,7 @@ public class JL_LevelManager : MonoBehaviour
                     }
                     break;
             }
-        }        
+        }
 
         IN_TacticScore += (int)V3_Result.z;
 
@@ -157,54 +180,54 @@ public class JL_LevelManager : MonoBehaviour
     {
         if (BL_SetA)
         {
-            DI_Results.Add(new Vector3(1, 0, 0), new Vector3(0,3,0));
-            DI_Results.Add(new Vector3(1, 0, 1), new Vector3(0,0,1));
-            DI_Results.Add(new Vector3(1, 0, 2), new Vector3(0,0,2));
-            DI_Results.Add(new Vector3(1, 1, 0), new Vector3(2,5,0));
-            DI_Results.Add(new Vector3(1, 1, 1), new Vector3(0,1,1));
-            DI_Results.Add(new Vector3(1, 1, 2), new Vector3(1,2,1));
-            DI_Results.Add(new Vector3(2, 2, 0), new Vector3(0,0,2));
-            DI_Results.Add(new Vector3(2, 2, 1), new Vector3(1,3,0));
-            DI_Results.Add(new Vector3(2, 2, 2), new Vector3(3,2,2));
-            DI_Results.Add(new Vector3(2, 3, 0), new Vector3(0,4,1));
-            DI_Results.Add(new Vector3(2, 3, 1), new Vector3(0,6,1));
-            DI_Results.Add(new Vector3(2, 3, 2), new Vector3(1,3,0));
-            DI_Results.Add(new Vector3(2, 4, 0), new Vector3(0,2,1));
-            DI_Results.Add(new Vector3(2, 4, 1), new Vector3(0,0,2));
-            DI_Results.Add(new Vector3(2, 4, 2), new Vector3(3,1,2));
-            DI_Results.Add(new Vector3(2, 5, 0), new Vector3(3,2,1));
-            DI_Results.Add(new Vector3(2, 5, 1), new Vector3(0,0,2));
-            DI_Results.Add(new Vector3(2, 5, 2), new Vector3(2,3,0));
-            DI_Results.Add(new Vector3(3, 6, 0), new Vector3(3,2,1));
-            DI_Results.Add(new Vector3(3, 6, 1), new Vector3(3,1,2));
-            DI_Results.Add(new Vector3(3, 6, 2), new Vector3(0,0,2));
-            DI_Results.Add(new Vector3(3, 7, 0), new Vector3(0,4,0));
-            DI_Results.Add(new Vector3(3, 7, 1), new Vector3(1,2,2));
-            DI_Results.Add(new Vector3(3, 7, 2), new Vector3(3,4,0));
-            DI_Results.Add(new Vector3(3, 8, 0), new Vector3(0,0,2));
-            DI_Results.Add(new Vector3(3, 8, 1), new Vector3(3,1,1));
-            DI_Results.Add(new Vector3(3, 8, 2), new Vector3(0,3,2));
-            DI_Results.Add(new Vector3(3, 9, 0), new Vector3(3,1,2));
-            DI_Results.Add(new Vector3(3, 9, 1), new Vector3(1,5,0));
-            DI_Results.Add(new Vector3(3, 9, 2), new Vector3(0,0,2));
-           DI_Results.Add(new Vector3(4, 10, 0), new Vector3(1,3,2));
-           DI_Results.Add(new Vector3(4, 10, 1), new Vector3(3,2,1));
-           DI_Results.Add(new Vector3(4, 10, 2), new Vector3(2,4,0));
-           DI_Results.Add(new Vector3(4, 11, 0), new Vector3(3,2,1));
-           DI_Results.Add(new Vector3(4, 11, 1), new Vector3(0,2,2));
-           DI_Results.Add(new Vector3(4, 11, 2), new Vector3(3,3,0));
-           DI_Results.Add(new Vector3(4, 12, 0), new Vector3(0,3,0));
-           DI_Results.Add(new Vector3(4, 12, 1), new Vector3(0,3,2));
-           DI_Results.Add(new Vector3(4, 12, 2), new Vector3(1,5,1));
-           DI_Results.Add(new Vector3(4, 13, 0), new Vector3(2,6,0));
-           DI_Results.Add(new Vector3(4, 13, 1), new Vector3(0,3,1));
-           DI_Results.Add(new Vector3(4, 13, 2), new Vector3(3,2,2));
+            DI_Results.Add(new Vector3(1, 0, 0), new Vector3(0, 3, 0));
+            DI_Results.Add(new Vector3(1, 0, 1), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(1, 0, 2), new Vector3(2, 1, 1));
+            DI_Results.Add(new Vector3(1, 1, 0), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(1, 1, 1), new Vector3(2, 4, 0));
+            DI_Results.Add(new Vector3(1, 1, 2), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(2, 2, 0), new Vector3(1, 2, 1));
+            DI_Results.Add(new Vector3(2, 2, 1), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(2, 2, 2), new Vector3(1, 3, 0));
+            DI_Results.Add(new Vector3(2, 3, 0), new Vector3(1, 3, 0));
+            DI_Results.Add(new Vector3(2, 3, 1), new Vector3(0, 2, 1));
+            DI_Results.Add(new Vector3(2, 3, 2), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(2, 4, 0), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(2, 4, 1), new Vector3(3, 3, 0));
+            DI_Results.Add(new Vector3(2, 4, 2), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(2, 5, 0), new Vector3(3, 1, 2));
+            DI_Results.Add(new Vector3(2, 5, 1), new Vector3(0, 4, 1));
+            DI_Results.Add(new Vector3(2, 5, 2), new Vector3(0, 6, 0));
+            DI_Results.Add(new Vector3(3, 6, 0), new Vector3(2, 3, 0));
+            DI_Results.Add(new Vector3(3, 6, 1), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(3, 6, 2), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(3, 7, 0), new Vector3(3, 4, 0));
+            DI_Results.Add(new Vector3(3, 7, 1), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(3, 7, 2), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(3, 8, 0), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(3, 8, 1), new Vector3(0, 4, 0));
+            DI_Results.Add(new Vector3(3, 8, 2), new Vector3(1, 2, 1));
+            DI_Results.Add(new Vector3(3, 9, 0), new Vector3(0, 3, 2));
+            DI_Results.Add(new Vector3(3, 9, 1), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(3, 9, 2), new Vector3(1, 5, 0));
+            DI_Results.Add(new Vector3(4, 10, 0), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(4, 10, 1), new Vector3(1, 3, 1));
+            DI_Results.Add(new Vector3(4, 10, 2), new Vector3(3, 2, 0));
+            DI_Results.Add(new Vector3(4, 11, 0), new Vector3(2, 4, 1));
+            DI_Results.Add(new Vector3(4, 11, 1), new Vector3(3, 2, 0));
+            DI_Results.Add(new Vector3(4, 11, 2), new Vector3(0, 2, 2));
+            DI_Results.Add(new Vector3(4, 12, 0), new Vector3(3, 2, 0));
+            DI_Results.Add(new Vector3(4, 12, 1), new Vector3(0, 3, 2));
+            DI_Results.Add(new Vector3(4, 12, 2), new Vector3(1, 5, 1));
+            DI_Results.Add(new Vector3(4, 13, 0), new Vector3(2, 6, 0));
+            DI_Results.Add(new Vector3(4, 13, 1), new Vector3(0, 3, 1));
+            DI_Results.Add(new Vector3(4, 13, 2), new Vector3(3, 1, 2));
         }
         else
         {
             DI_Results.Add(new Vector3(1, 0, 0), new Vector3(1, 3, 0));
-            DI_Results.Add(new Vector3(1, 0, 1), new Vector3(0, 1, 3));
-            DI_Results.Add(new Vector3(1, 0, 2), new Vector3(3, 1, 0));
+            DI_Results.Add(new Vector3(1, 0, 1), new Vector3(0, 1, 2));
+            DI_Results.Add(new Vector3(1, 0, 2), new Vector3(3, 1, 1));
             DI_Results.Add(new Vector3(1, 1, 0), new Vector3(3, 2, 0));
             DI_Results.Add(new Vector3(1, 1, 1), new Vector3(0, 0, 2));
             DI_Results.Add(new Vector3(1, 1, 2), new Vector3(0, 2, 1));
@@ -232,18 +255,18 @@ public class JL_LevelManager : MonoBehaviour
             DI_Results.Add(new Vector3(3, 9, 0), new Vector3(3, 3, 0));
             DI_Results.Add(new Vector3(3, 9, 1), new Vector3(2, 2, 2));
             DI_Results.Add(new Vector3(3, 9, 2), new Vector3(0, 3, 1));
-           DI_Results.Add(new Vector3(4, 10, 0), new Vector3(0, 2, 1));
-           DI_Results.Add(new Vector3(4, 10, 1), new Vector3(2, 4, 0));
-           DI_Results.Add(new Vector3(4, 10, 2), new Vector3(0, 0, 2));
-           DI_Results.Add(new Vector3(4, 11, 0), new Vector3(0, 0, 2));
-           DI_Results.Add(new Vector3(4, 11, 1), new Vector3(3, 1, 1));
-           DI_Results.Add(new Vector3(4, 11, 2), new Vector3(3, 2, 0));
-           DI_Results.Add(new Vector3(4, 12, 0), new Vector3(1, 4, 0));
-           DI_Results.Add(new Vector3(4, 12, 1), new Vector3(0, 2, 1));
-           DI_Results.Add(new Vector3(4, 12, 2), new Vector3(0, 0, 2));
-           DI_Results.Add(new Vector3(4, 13, 0), new Vector3(0, 4, 1));
-           DI_Results.Add(new Vector3(4, 13, 1), new Vector3(3, 1, 2));
-           DI_Results.Add(new Vector3(4, 13, 2), new Vector3(3, 3, 0));
+            DI_Results.Add(new Vector3(4, 10, 0), new Vector3(0, 2, 1));
+            DI_Results.Add(new Vector3(4, 10, 1), new Vector3(2, 4, 0));
+            DI_Results.Add(new Vector3(4, 10, 2), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(4, 11, 0), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(4, 11, 1), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(4, 11, 2), new Vector3(3, 2, 0));
+            DI_Results.Add(new Vector3(4, 12, 0), new Vector3(1, 4, 0));
+            DI_Results.Add(new Vector3(4, 12, 1), new Vector3(0, 2, 1));
+            DI_Results.Add(new Vector3(4, 12, 2), new Vector3(0, 0, 2));
+            DI_Results.Add(new Vector3(4, 13, 0), new Vector3(0, 4, 1));
+            DI_Results.Add(new Vector3(4, 13, 1), new Vector3(3, 1, 2));
+            DI_Results.Add(new Vector3(4, 13, 2), new Vector3(3, 3, 0));
         }
         SC_UIManager.SetupDictionary();
     }
