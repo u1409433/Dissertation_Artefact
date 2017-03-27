@@ -17,6 +17,7 @@ public class JL_LevelManager : MonoBehaviour
     public int IN_PotionsLeft = 3;
 
     public bool BL_SetA = true;
+    public bool BL_DDEnabled = false;
 
     public Dictionary<Vector3, Vector3> DI_Results;
 
@@ -41,52 +42,60 @@ public class JL_LevelManager : MonoBehaviour
 
     void AdaptiveDifficulty(int vtacscore)
     {
-        if (SC_UIManager.IN_Level == 1)
+        if (BL_DDEnabled)
         {
-            if (IN_TacticScore <= 1)
+            if (SC_UIManager.IN_Level == 1)
             {
-                if (IN_Difficulty > -1) IN_Difficulty--;
+                if (IN_TacticScore <= 1)
+                {
+                    if (IN_Difficulty > -1) IN_Difficulty--;
+                }
+                else if (IN_TacticScore == 2)
+                {
+                    //Do nothing to the difficulty
+                }
+                else if (IN_TacticScore >= 3)
+                {
+                    if (IN_Difficulty < 1) IN_Difficulty++;
+                }
             }
-            else if (IN_TacticScore == 2)
+            else
             {
-                //Do nothing to the difficulty
+                if (IN_TacticScore <= 5)
+                {
+                    if (IN_Difficulty > -1) IN_Difficulty--;
+                }
+                else if (IN_TacticScore > 5 && IN_TacticScore < 9)
+                {
+                    //Do nothing to the difficulty
+                }
+                else if (IN_TacticScore >= 9)
+                {
+                    if (IN_Difficulty < 1) IN_Difficulty++;
+                }
             }
-            else if (IN_TacticScore >= 3)
+
+            switch (IN_Difficulty)
             {
-                if (IN_Difficulty < 1) IN_Difficulty++;
+                case -1:
+                    SC_UIManager.UI_DifficultyText.text = "Reduced by 1 from difficulty";
+                    break;
+                case 0:
+                    SC_UIManager.UI_DifficultyText.text = "No change from difficulty";
+                    break;
+                case 1:
+                    SC_UIManager.UI_DifficultyText.text = "Increased by 1 from difficulty";
+                    break;
             }
+
+
+            IN_TacticScore = 0;
         }
         else
         {
-            if (IN_TacticScore <= 5)
-            {
-                if (IN_Difficulty > -1) IN_Difficulty--;
-            }
-            else if (IN_TacticScore > 5 && IN_TacticScore < 9)
-            {
-                //Do nothing to the difficulty
-            }
-            else if (IN_TacticScore >= 9)
-            {
-                if (IN_Difficulty < 1) IN_Difficulty++;
-            }
+            IN_Difficulty = 0;
         }
 
-        switch (IN_Difficulty)
-        {
-            case -1:
-                SC_UIManager.UI_DifficultyText.text = "Reduced by 1 from difficulty";
-                break;
-            case 0:
-                SC_UIManager.UI_DifficultyText.text = "No change from difficulty";
-                break;
-            case 1:
-                SC_UIManager.UI_DifficultyText.text = "Increased by 1 from difficulty";
-                break;
-        }
-
-
-        IN_TacticScore = 0;
     }
 
     public void NextLevel()
@@ -180,93 +189,93 @@ public class JL_LevelManager : MonoBehaviour
     {
         if (BL_SetA)
         {
-            DI_Results.Add(new Vector3(1, 0, 0), new Vector3(0, 3, 0));
+            DI_Results.Add(new Vector3(1, 0, 0), new Vector3(0, 4, 0));
             DI_Results.Add(new Vector3(1, 0, 1), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(1, 0, 2), new Vector3(2, 1, 1));
+            DI_Results.Add(new Vector3(1, 0, 2), new Vector3(2, 2, 1));
             DI_Results.Add(new Vector3(1, 1, 0), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(1, 1, 1), new Vector3(2, 4, 0));
-            DI_Results.Add(new Vector3(1, 1, 2), new Vector3(3, 1, 1));
-            DI_Results.Add(new Vector3(2, 2, 0), new Vector3(1, 2, 1));
+            DI_Results.Add(new Vector3(1, 1, 1), new Vector3(2, 5, 0));
+            DI_Results.Add(new Vector3(1, 1, 2), new Vector3(3, 2, 1));
+            DI_Results.Add(new Vector3(2, 2, 0), new Vector3(1, 3, 1));
             DI_Results.Add(new Vector3(2, 2, 1), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(2, 2, 2), new Vector3(1, 3, 0));
-            DI_Results.Add(new Vector3(2, 3, 0), new Vector3(1, 3, 0));
-            DI_Results.Add(new Vector3(2, 3, 1), new Vector3(0, 2, 1));
+            DI_Results.Add(new Vector3(2, 2, 2), new Vector3(1, 4, 0));
+            DI_Results.Add(new Vector3(2, 3, 0), new Vector3(1, 4, 0));
+            DI_Results.Add(new Vector3(2, 3, 1), new Vector3(0, 3, 1));
             DI_Results.Add(new Vector3(2, 3, 2), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(2, 4, 0), new Vector3(3, 1, 1));
-            DI_Results.Add(new Vector3(2, 4, 1), new Vector3(3, 3, 0));
+            DI_Results.Add(new Vector3(2, 4, 0), new Vector3(3, 2, 1));
+            DI_Results.Add(new Vector3(2, 4, 1), new Vector3(3, 4, 0));
             DI_Results.Add(new Vector3(2, 4, 2), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(2, 5, 0), new Vector3(3, 1, 2));
-            DI_Results.Add(new Vector3(2, 5, 1), new Vector3(0, 4, 1));
-            DI_Results.Add(new Vector3(2, 5, 2), new Vector3(0, 6, 0));
-            DI_Results.Add(new Vector3(3, 6, 0), new Vector3(2, 3, 0));
-            DI_Results.Add(new Vector3(3, 6, 1), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(2, 5, 0), new Vector3(3, 2, 2));
+            DI_Results.Add(new Vector3(2, 5, 1), new Vector3(0, 5, 1));
+            DI_Results.Add(new Vector3(2, 5, 2), new Vector3(0, 7, 0));
+            DI_Results.Add(new Vector3(3, 6, 0), new Vector3(2, 4, 0));
+            DI_Results.Add(new Vector3(3, 6, 1), new Vector3(3, 2, 1));
             DI_Results.Add(new Vector3(3, 6, 2), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(3, 7, 0), new Vector3(3, 4, 0));
+            DI_Results.Add(new Vector3(3, 7, 0), new Vector3(3, 5, 0));
             DI_Results.Add(new Vector3(3, 7, 1), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(3, 7, 2), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(3, 7, 2), new Vector3(3, 2, 1));
             DI_Results.Add(new Vector3(3, 8, 0), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(3, 8, 1), new Vector3(0, 4, 0));
-            DI_Results.Add(new Vector3(3, 8, 2), new Vector3(1, 2, 1));
-            DI_Results.Add(new Vector3(3, 9, 0), new Vector3(0, 3, 2));
-            DI_Results.Add(new Vector3(3, 9, 1), new Vector3(3, 1, 1));
-            DI_Results.Add(new Vector3(3, 9, 2), new Vector3(1, 5, 0));
+            DI_Results.Add(new Vector3(3, 8, 1), new Vector3(0, 5, 0));
+            DI_Results.Add(new Vector3(3, 8, 2), new Vector3(1, 3, 1));
+            DI_Results.Add(new Vector3(3, 9, 0), new Vector3(0, 4, 2));
+            DI_Results.Add(new Vector3(3, 9, 1), new Vector3(3, 2, 1));
+            DI_Results.Add(new Vector3(3, 9, 2), new Vector3(1, 6, 0));
             DI_Results.Add(new Vector3(4, 10, 0), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(4, 10, 1), new Vector3(1, 3, 1));
-            DI_Results.Add(new Vector3(4, 10, 2), new Vector3(3, 2, 0));
-            DI_Results.Add(new Vector3(4, 11, 0), new Vector3(2, 4, 1));
-            DI_Results.Add(new Vector3(4, 11, 1), new Vector3(3, 2, 0));
-            DI_Results.Add(new Vector3(4, 11, 2), new Vector3(0, 2, 2));
-            DI_Results.Add(new Vector3(4, 12, 0), new Vector3(3, 2, 0));
-            DI_Results.Add(new Vector3(4, 12, 1), new Vector3(0, 3, 2));
-            DI_Results.Add(new Vector3(4, 12, 2), new Vector3(1, 5, 1));
+            DI_Results.Add(new Vector3(4, 10, 1), new Vector3(1, 4, 1));
+            DI_Results.Add(new Vector3(4, 10, 2), new Vector3(3, 3, 0));
+            DI_Results.Add(new Vector3(4, 11, 0), new Vector3(2, 5, 1));
+            DI_Results.Add(new Vector3(4, 11, 1), new Vector3(3, 3, 0));
+            DI_Results.Add(new Vector3(4, 11, 2), new Vector3(0, 3, 2));
+            DI_Results.Add(new Vector3(4, 12, 0), new Vector3(3, 3, 0));
+            DI_Results.Add(new Vector3(4, 12, 1), new Vector3(0, 4, 2));
+            DI_Results.Add(new Vector3(4, 12, 2), new Vector3(1, 6, 1));
             DI_Results.Add(new Vector3(4, 13, 0), new Vector3(2, 6, 0));
-            DI_Results.Add(new Vector3(4, 13, 1), new Vector3(0, 3, 1));
-            DI_Results.Add(new Vector3(4, 13, 2), new Vector3(3, 1, 2));
+            DI_Results.Add(new Vector3(4, 13, 1), new Vector3(0, 4, 1));
+            DI_Results.Add(new Vector3(4, 13, 2), new Vector3(3, 2, 2));
         }
         else
         {
-            DI_Results.Add(new Vector3(1, 0, 0), new Vector3(1, 3, 0));
-            DI_Results.Add(new Vector3(1, 0, 1), new Vector3(0, 1, 2));
-            DI_Results.Add(new Vector3(1, 0, 2), new Vector3(3, 1, 1));
-            DI_Results.Add(new Vector3(1, 1, 0), new Vector3(3, 2, 0));
+            DI_Results.Add(new Vector3(1, 0, 0), new Vector3(1, 4, 0));
+            DI_Results.Add(new Vector3(1, 0, 1), new Vector3(0, 2, 2));
+            DI_Results.Add(new Vector3(1, 0, 2), new Vector3(3, 2, 1));
+            DI_Results.Add(new Vector3(1, 1, 0), new Vector3(3, 3, 0));
             DI_Results.Add(new Vector3(1, 1, 1), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(1, 1, 2), new Vector3(0, 2, 1));
-            DI_Results.Add(new Vector3(2, 2, 0), new Vector3(3, 1, 1));
+            DI_Results.Add(new Vector3(1, 1, 2), new Vector3(0, 3, 1));
+            DI_Results.Add(new Vector3(2, 2, 0), new Vector3(3, 2, 1));
             DI_Results.Add(new Vector3(2, 2, 1), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(2, 2, 2), new Vector3(1, 4, 0));
-            DI_Results.Add(new Vector3(2, 3, 0), new Vector3(2, 3, 0));
+            DI_Results.Add(new Vector3(2, 2, 2), new Vector3(1, 5, 0));
+            DI_Results.Add(new Vector3(2, 3, 0), new Vector3(2, 4, 0));
             DI_Results.Add(new Vector3(2, 3, 1), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(2, 3, 2), new Vector3(0, 2, 1));
-            DI_Results.Add(new Vector3(2, 4, 0), new Vector3(3, 1, 2));
-            DI_Results.Add(new Vector3(2, 4, 1), new Vector3(3, 3, 0));
-            DI_Results.Add(new Vector3(2, 4, 2), new Vector3(0, 2, 1));
-            DI_Results.Add(new Vector3(2, 5, 0), new Vector3(1, 3, 1));
-            DI_Results.Add(new Vector3(2, 5, 1), new Vector3(0, 5, 0));
-            DI_Results.Add(new Vector3(2, 5, 2), new Vector3(0, 2, 2));
+            DI_Results.Add(new Vector3(2, 3, 2), new Vector3(0, 3, 1));
+            DI_Results.Add(new Vector3(2, 4, 0), new Vector3(3, 2, 2));
+            DI_Results.Add(new Vector3(2, 4, 1), new Vector3(3, 4, 0));
+            DI_Results.Add(new Vector3(2, 4, 2), new Vector3(0, 3, 1));
+            DI_Results.Add(new Vector3(2, 5, 0), new Vector3(1, 4, 1));
+            DI_Results.Add(new Vector3(2, 5, 1), new Vector3(0, 6, 0));
+            DI_Results.Add(new Vector3(2, 5, 2), new Vector3(0, 3, 2));
             DI_Results.Add(new Vector3(3, 6, 0), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(3, 6, 1), new Vector3(2, 3, 0));
-            DI_Results.Add(new Vector3(3, 6, 2), new Vector3(3, 1, 1));
-            DI_Results.Add(new Vector3(3, 7, 0), new Vector3(0, 2, 1));
+            DI_Results.Add(new Vector3(3, 6, 1), new Vector3(2, 4, 0));
+            DI_Results.Add(new Vector3(3, 6, 2), new Vector3(3, 2, 1));
+            DI_Results.Add(new Vector3(3, 7, 0), new Vector3(0, 3, 1));
             DI_Results.Add(new Vector3(3, 7, 1), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(3, 7, 2), new Vector3(0, 3, 0));
-            DI_Results.Add(new Vector3(3, 8, 0), new Vector3(1, 4, 0));
-            DI_Results.Add(new Vector3(3, 8, 1), new Vector3(1, 2, 1));
+            DI_Results.Add(new Vector3(3, 7, 2), new Vector3(0, 4, 0));
+            DI_Results.Add(new Vector3(3, 8, 0), new Vector3(1, 5, 0));
+            DI_Results.Add(new Vector3(3, 8, 1), new Vector3(1, 3, 1));
             DI_Results.Add(new Vector3(3, 8, 2), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(3, 9, 0), new Vector3(3, 3, 0));
-            DI_Results.Add(new Vector3(3, 9, 1), new Vector3(2, 2, 2));
-            DI_Results.Add(new Vector3(3, 9, 2), new Vector3(0, 3, 1));
-            DI_Results.Add(new Vector3(4, 10, 0), new Vector3(0, 2, 1));
-            DI_Results.Add(new Vector3(4, 10, 1), new Vector3(2, 4, 0));
+            DI_Results.Add(new Vector3(3, 9, 0), new Vector3(3, 4, 0));
+            DI_Results.Add(new Vector3(3, 9, 1), new Vector3(2, 3, 2));
+            DI_Results.Add(new Vector3(3, 9, 2), new Vector3(0, 4, 1));
+            DI_Results.Add(new Vector3(4, 10, 0), new Vector3(0, 3, 1));
+            DI_Results.Add(new Vector3(4, 10, 1), new Vector3(2, 5, 0));
             DI_Results.Add(new Vector3(4, 10, 2), new Vector3(0, 0, 2));
             DI_Results.Add(new Vector3(4, 11, 0), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(4, 11, 1), new Vector3(3, 1, 1));
-            DI_Results.Add(new Vector3(4, 11, 2), new Vector3(3, 2, 0));
-            DI_Results.Add(new Vector3(4, 12, 0), new Vector3(1, 4, 0));
-            DI_Results.Add(new Vector3(4, 12, 1), new Vector3(0, 2, 1));
+            DI_Results.Add(new Vector3(4, 11, 1), new Vector3(3, 2, 1));
+            DI_Results.Add(new Vector3(4, 11, 2), new Vector3(3, 3, 0));
+            DI_Results.Add(new Vector3(4, 12, 0), new Vector3(1, 5, 0));
+            DI_Results.Add(new Vector3(4, 12, 1), new Vector3(0, 3, 1));
             DI_Results.Add(new Vector3(4, 12, 2), new Vector3(0, 0, 2));
-            DI_Results.Add(new Vector3(4, 13, 0), new Vector3(0, 4, 1));
-            DI_Results.Add(new Vector3(4, 13, 1), new Vector3(3, 1, 2));
-            DI_Results.Add(new Vector3(4, 13, 2), new Vector3(3, 3, 0));
+            DI_Results.Add(new Vector3(4, 13, 0), new Vector3(0, 5, 1));
+            DI_Results.Add(new Vector3(4, 13, 1), new Vector3(3, 2, 2));
+            DI_Results.Add(new Vector3(4, 13, 2), new Vector3(3, 4, 0));
         }
         SC_UIManager.SetupDictionary();
     }
